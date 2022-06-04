@@ -1,0 +1,61 @@
+GET http://localhost:3000/api/user/dashboard
+auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiU2FudGlhZ28iLCJfaWQiOiI2MjhkYTVhMWQ3NTUxZGFlZTJmYmY2ZWMiLCJpYXQiOjE2NTM0NTUxOTQsImV4cCI6MTY1Mzg4NzE5NH0.Q-NIVzg2N1pOdHlcaHQn2PhY0M105_5A3StFUK1tbyw
+
+
+###
+POST http://localhost:3000/api/user/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiU2FudGlhZ28iLCJfaWQiOiI2MjhkYTVhMWQ3NTUxZGFlZTJmYmY2ZWMiLCJpYXQiOjE2NTM0NTUxOTR9.eO-FEgqsH2loPeA5w4rMDkuPqgxUar0LIvKw-n40N5g"
+}
+
+###
+DELETE http://localhost:3000/api/user/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiU2FudGlhZ28iLCJfaWQiOiI2MjhkYTVhMWQ3NTUxZGFlZTJmYmY2ZWMiLCJpYXQiOjE2NTM0OTA1NjJ9.lvxNPSNFYqLYUHOa7wzU-2kGCAgZuORH3n2Wp34yR1k"
+}
+###
+POST http://localhost:3000/api/user/register
+Content-Type: application/json
+
+{
+    "name": "Juan Daniel",
+    "email": "jagamez321@gmail.com", 
+    "phone": 3008168146,
+    "password" : "Santiago1a",
+    "username": "ojedasodev",
+    "last_accesed_ip": "000.120.045"
+}
+
+###
+POST http://localhost:3000/api/user/login 
+Content-Type: application/json
+
+{
+    "email": "jagamez321@gmail.com", 
+    "password": "Santiago1a",
+    "ip_address": "000.120.045"
+}
+
+###
+
+GET http://localhost:3000/api/user/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiamFnYW1lejMyMUBnbWFpbC5jb20iLCJuYW1lIjoiSnVhbiBEYW5pZWwifSwiaWF0IjoxNjUzNzI4MDIwLCJleHAiOjE2NTM3MzUyMjB9.mONrVNcolNCdby2RWKMKCsN20JO3vUymADLqiPrfglE
+
+###
+
+POST http://localhost:3000/api/user/get_user
+Content-Type: application/json
+{
+    "email": "jagamez321@gmail.com"
+}
+
+###
+
+POST http://localhost:3000/api/user/verification
+Content-Type: application/json
+{
+    "code": "767649"
+}
