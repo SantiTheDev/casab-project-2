@@ -1,9 +1,10 @@
+require("dotenv").config();
 const mongoose = require('mongoose')
 
-const URI = 'mongodb://localhost/prueba_casab'
+//const URI = 'mongodb://localhost/prueba_casab'
 
 // db connection
-//const URI    = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.BDNAME}.qqshxbr.mongodb.net/?retryWrites=true&w=majority`
+const URI    = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.BDNAME}.qqshxbr.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose.connect(URI,
     { useNewUrlParser: true, useUnifiedTopology: true }

@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 import React, {
 	useContext,
 	createContext,
@@ -93,16 +94,10 @@ function useAuth() {
 
 function useProvideAuth() {
 	const [user, setUser] = useState(null);
+	const [token, setToken] = useState(null);
 
-	const signin = (userLogged, cb) => {
+	const signin = (cb) => {
 		return fakeAuth.signin(() => {
-			setUser({
-				name: "KEKU",
-				lastname: "TELLEZ",
-				email: "KEKUTELLEZ@UTB.COM",
-				username: userLogged.username,
-			});
-			console.log(user);
 			cb();
 		});
 	};
@@ -118,6 +113,9 @@ function useProvideAuth() {
 		user,
 		signin,
 		signout,
+		setToken,
+		setUser,
+		token
 	};
 }
 
@@ -144,7 +142,7 @@ function Profile() {
 
 function Dashboard() {
 	const auth = useAuth();
-	return auth.user ? (
+	return auth.token ? (
 		<div className="dashboard">    
 			<div className="menu">
 				<h1>Dashboard</h1>
@@ -173,7 +171,7 @@ function Header() {
 
 	return (
 		<nav className="header">
-			{!auth.user ? (
+			{!auth.token ? (
 				<div className="buttons">
 					<button onClick={() => navigate("/login")}>Log in</button>
 					<button onClick={() => navigate("/signup")}>Sing up</button>
@@ -182,6 +180,7 @@ function Header() {
 				<div className="buttons">
 					<button
 						onClick={() => {
+							auth.setToken(null)
 							auth.signout(() => navigate("/login"));
 						}}
 					>
@@ -194,26 +193,34 @@ function Header() {
 }
 
 function LoginPage() {
-	const [username, setUsername] = useState("keku");
+	const [username, setUsername] = useState("ojedasodev@gmail.com");
 	const [password, setPassword] = useState();
 	const navigate = useNavigate();
 	const auth = useAuth();
-
-	const handleSubmit = (event) => {
+	console.log(auth)
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		console.log(username, password);
-		const data = {username, password}
+		const data = {
+			"email": username, 
+			"password":"Santiago1a", //password
+			"ip_address": "000.120.045"//getIp()
+		}
 		// TODO: call the backend method to authentication
-		fetch("/login", {method: "POST", body: JSON.stringify(data) }).then(res => {
-			// TODO: if authentication is ok =>
-			// if(res.status === 200){
-				auth.signin({ username, password }, () => navigate("/dashboard"));
-			// }
-		}).catch(e => {
-			console.log(e);
-			// TODO: if authentication is not ok show error
-			return;
-		})
+		const header = {'Content-Type': 'application/json','accept':'application/json'}
+		const request = await fetch("http://localhost:4000/api/user/login ", {method: "POST", body: JSON.stringify(data),headers:header })
+		const response = await request.json();
+		//console.log(response.data.access.Token)
+		if (response.messaje === 'welcome'){
+			auth.setToken(response.data.access.Token)
+			//console.log(auth)
+			let usuario = getUser(header,username)
+			console.log(usuario)
+			//auth.setUser(usuario)
+			localStorage.setItem("Token",response.data.access.Token)
+			auth.signin(() => navigate("/dashboard"));
+		}
+		console.log(response) 
 	};
 
 	return (
@@ -242,6 +249,26 @@ function LoginPage() {
 	);
 }
 
+function getUser(header,username){
+	let usuario = null
+	const data = {
+		"email": username
+	}
+	fetch('http://localhost:4000/api/user/get_user',{method:"POST", body: JSON.stringify(data), headers:header})
+	.then(res => res.json())
+	.then(res => {usuario=res})
+	console.log(usuario)
+	return usuario	 
+}
+
+async function getIp () {
+	const res = await fetch('https://api.ipify.org?format=json');
+	const data = await res.json();
+	const ip = data.ip;
+	console.log(ip)
+	return ip;
+}
+
 function SignupPage() {
 	const [name, setName] = useState();
 	const [lastname, setLastname] = useState();
@@ -252,10 +279,23 @@ function SignupPage() {
 	let navigate = useNavigate();
 	let auth = useAuth();
 
-	let handleSubmit = (event) => {
+	let handleSubmit = async (event) => {
 		event.preventDefault();
 		console.log(name, lastname, email, username, password, password2);
 		// TODO: call the backend method to register
+		const data = {
+			"name": "Juan Daniel",
+			"email": "jagamez321@gmail.com", 
+			"phone": 3008168146,
+			"password" : "Santiago1a",
+			"username": "ojedasodev",
+			"last_accesed_ip": "000.120.045"
+		}
+		// TODO: call the backend method to authentication
+		const header = {'Content-Type': 'application/json','accept':'application/json'}
+		const request = await fetch("http://localhost:4000/api/user/register ", {method: "POST", body: JSON.stringify(data),headers:header })
+		const response = await request.json();
+		console.log(response)
 		// TODO: if register is ok =>
 		auth.signin(() => navigate("/login"));
 
