@@ -1,8 +1,6 @@
 import {
   BrowserRouter as Router,
   Routes as Switch,
-  Route,
-  Link,
 } from "react-router-dom";
 import Signin from "../src/components/Signin";
 

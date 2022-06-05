@@ -1,19 +1,20 @@
-import { get } from "mongoose";
 import React, {
-	useContext,
-	createContext,
-	useState,
-	useEffect,
+
 } from "react";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Link,
-	useSearchParams,
-	useNavigate,
-	Navigate
 } from "react-router-dom";
+
+import Dashboard from "./components/dashboard/dashboard"; 
+import ForgetPasswordPage from "./components/forgetpassword/forgetpassword";
+import Header from "./components/header/header"; 
+import LoginPage from "./components/login/login";
+import NewPasswordPage from "./components/newpassword/newpassword";
+//import Profile from "./components/profile/profile";
+import SignupPage from "./components/singup/singup";
+import ProvideAuth from "./components/custom/useAuth";
 
 // This example has 3 pages: a public page, a protected
 // page, and a login screen. In order to see the protected
@@ -64,7 +65,7 @@ export default function AuthExample() {
 		</ProvideAuth>
 	);
 }
-
+/*
 const fakeAuth = {
 	isAuthenticated: false,
 	signin(cb) {
@@ -81,6 +82,8 @@ const fakeAuth = {
  * `authContext`, `ProvideAuth`, `useAuth` and `useProvideAuth`
  * refer to: https://usehooks.com/useAuth/
  */
+
+/*
 const authContext = createContext();
 
 function ProvideAuth({ children }) {
@@ -249,6 +252,7 @@ function LoginPage() {
 	);
 }
 
+
 function getUser(header,username){
 	let usuario = null
 	const data = {
@@ -268,6 +272,7 @@ async function getIp () {
 	console.log(ip)
 	return ip;
 }
+
 
 function SignupPage() {
 	const [name, setName] = useState();
@@ -424,3 +429,4 @@ function ForgetPasswordPage() {
 		</form>
 	);
 }
+*/
