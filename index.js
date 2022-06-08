@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require('dotenv').config()
 const bodyparser = require("body-parser");
 const { mongoose } = require("./database");
 const cors = require("cors");
@@ -14,7 +15,7 @@ const authRoutes = require("./routes/auth.js");
 app.use(express.json());
 
 // route middlewares
-const corsOptions = { origin: "*" };
+const corsOptions = { origin: process.env.HOST_ACCEPTED };
 const configureCors = cors(corsOptions);
 app.options("*", configureCors);
 app.use("/api/user", configureCors, authRoutes);

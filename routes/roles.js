@@ -3,7 +3,7 @@ const { isAdmin } =require('../controllers/admin.controller')
 const router = require('express').Router()
 
 
-router.get('/getroles', getRoles)
-router.post('/add', addRoles)
-router.delete('/delete', deleteRoles)
+router.get('/getroles/:token', isAdmin,getRoles)
+router.post('/add/:token', isAdmin,addRoles)
+router.delete('/delete/:token',isAdmin, deleteRoles)
 module.exports = router
