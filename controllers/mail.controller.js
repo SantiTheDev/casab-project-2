@@ -64,7 +64,7 @@ const getTemplateCorreo = (name, token) => {
     <div class="email-content">
     <h2>Hi ${ name }</h2>
     <p>Para confirmar tu cuenta, has click en el siguiente texto</p>
-    <a href="http://localhost:4000/api/user/activate/${token}">Confirmar cuenta</a>
+    <a href="${ proccess.env.HOST_BACKEND }/api/user/activate/${token}">Confirmar cuenta</a>
 </div>
     `
 }
@@ -83,7 +83,7 @@ const getTemplateRecovery = (name, token) => {
     <h2>Hi ${ name }</h2>
     <p>Has olvidado tu contrasenia, por lo tanto hemos enviado un link a este correo</p>
     <p>para que puedas recuperarla, si no has sido tu puedes ignorar este correo.</p>
-    <a href="http://localhost:4000/api/user/confirm-mail-recovery/${token}">Confirmar cuenta</a>
+    <a href="${ proccess.env.HOST_BACKEND }/api/user/confirm-mail-recovery/${token}">Confirmar cuenta</a>
 </div>
     `
 }
@@ -93,7 +93,7 @@ const confirmAccountTemplate = (nickname) => {
     <h2>Hi ${ nickname }</h2>
     <p>Tu cuenta ha sido activada, felicidades</p>
     <p>Ya puedes ingresar a nuestra plataforma, dale clic al siguiente enlace:.</p>
-    <a href="http://localhost:3000/login">Ir a la pagina</a>
+    <a href="${ process.env.HOST_FRONTEND }/login">Ir a la pagina</a>
 </div>
     `
 } 

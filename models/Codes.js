@@ -12,17 +12,18 @@ const codeSchema = mongoose.Schema({
     },
     timeActivation: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        expire: '3m'
     },
     timeExpiration: {
         type: Date,
         require: true,
         default: Date.now() + 120000 * 1.0
     },
-    tipo: {
+    ip_address: {
         type: String,
         require: true,
-        maxLength: 15
+        maxLength: 20
     },
     userID: {
         type: mongoose.Schema.ObjectId,

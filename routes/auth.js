@@ -65,14 +65,14 @@ router.delete("/logout", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  /* validate req.body
+  //validate req.body
   const { error } = schemaRegister.validate(req.body);
   if (error) {
     return res.status(400).json({
       error: error,
     });
   }
-  */
+  
   // already registed?
   const isEmailExist = await User.findOne({ email: req.body.email });
   if (isEmailExist) {
@@ -124,7 +124,7 @@ router.get("/activate/:token", async (req, res) => {
   const user = await User.findOne({ name: name });
   console.log("prueba 2", user);
   if (user === null) {
-    return res.json({
+    return res.redirect(`${ process.env.HOST_FRONTEND }/login`).json({
       succes: false,
       msg: "this user dont exist",
     });
@@ -136,7 +136,7 @@ router.get("/activate/:token", async (req, res) => {
      /* .then(res => console.log("All is well"))
       .catch(err => console.log("Something goes wrong"))*/
     return res.redirect(
-      "http://localhost:3000/login"
+      `${ process.env.HOST_FRONTEND }/login`
     );
   }
 });
@@ -213,7 +213,7 @@ router.get('/confirm-mail-recovery/:token', async(req, res)=>{
   if (!user) {
     return res.status(400).json({ error: "something goes wrong" });
   } else{
-    return res.redirect(`http://localhost:3000/recovery-pass/${token}`)
+    return res.redirect(`${ process.env.HOST_FRONTEND }/recovery-pass/${token}`)
   }
 
 })
@@ -286,6 +286,7 @@ router.post("/login", async (req, res) => {
     code.code = generarCode(6);
     console.log(code.code);
     code.userID = user._id;
+    code.ip_address = req.body.ip_address
     await code.save();
     const template = mailcont.getTemplateCode(user.name, code.code);
     await mailcont.sendEmail(
@@ -341,22 +342,24 @@ const generarCode = (a) => {
 };
 
 router.post("/verification", async (req, res) => {
-  const { code } = req.body;
-  const expira = Date.now();
+  const { code, ip_address } = req.body;
+  
   const verificacion = await Code.findOne({ code: code });
   console.log(verificacion);
   if (!verificacion) {
-    return res.status(400).json({ error: "this code dont exist" });
+    return res.status(400).json({ error: "this code dont exist or expire, try again" });
   } else {
     if (verificacion.isActive === false) {
       return res.status(400).json({ error: "this code is not active" });
     } else {
-      const expirate = verificacion.timeExpiration - expira;
-      if (expirate < 0.0) {
-        verificacion.isActive = false;
-        await verificacion.save();
-        return res.status(400).json({ error: "this code has been expirated" });
+      
+      if (verificacion.ip_address !== ip_address) {
+        return res.status(400).json({ error: "You can not use this code" });
       } else {
+        verificacion.isActive = false
+        await verificacion.save()
+          .then(res => console.log('Todo-fino'))
+          .catch(err => console.log('Algo paso mal'))
         const user = User.findOne({ _id: verificacion.userID });
         try {
           if (user) {
@@ -405,7 +408,7 @@ function createAccessToken(user) {
     email: user.email,
     rol: user.role
     
-  }, '10');
+  }, '2h');
 }
 
 function autheticateToken(req, res, next) {
