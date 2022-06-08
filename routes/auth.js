@@ -66,12 +66,12 @@ router.delete("/logout", async (req, res) => {
 
 router.post("/register", async (req, res) => {
   //validate req.body
-  const { error } = schemaRegister.validate(req.body);
+  /*const { error } = schemaRegister.validate(req.body);
   if (error) {
     return res.status(400).json({
       error: error,
     });
-  }
+  }*/
   
   // already registed?
   const isEmailExist = await User.findOne({ email: req.body.email });
@@ -83,8 +83,8 @@ router.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   const user = new User({
-    first_name: req.body.fname,
-    last_name: req.body.lname,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
     email: req.body.email,
     phone: req.body.phone,
     password: hashedPassword,
@@ -93,15 +93,19 @@ router.post("/register", async (req, res) => {
   });
 
   try {
-    const savedUser = await user.save();
+    const savedUser = await user.save()
+      .then(dat => console.log('positivo'))
+      .catch(error => error)
     const tokenMail = tokenCont.getToken({
       email: user.email,
       name: user.name,
       time: Date.now(),
-    }, '7d');
+    }, '7h');
+    console.log('romper1')
     const template = mailcont.getTemplateCorreo(user.first_name, tokenMail);
+    
     console.log(savedUser);
-    await tokenCont.sendEmail(user.email, "Confirmacion de Correo", template);
+    await mailcont.sendEmail(user.email, "Confirmacion de Correo", template);
     res.json({
       error: "good",
       data: savedUser,

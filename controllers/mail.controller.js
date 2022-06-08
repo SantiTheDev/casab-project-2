@@ -2,7 +2,7 @@ require('dotenv').config()
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken')
 const smg = require('@sendgrid/mail')
-
+const host = process.env.HOST_BACKEND
 // configuracion de los tokens para validar correos
 
 
@@ -54,6 +54,7 @@ const sendEmail = async(email, subject, html)=> {
         .send(msg)
         .then(() => {
           console.log('Email sent')
+          console.log(host)
         })
         .catch((error) => {
           console.error(error)
@@ -64,7 +65,7 @@ const getTemplateCorreo = (name, token) => {
     <div class="email-content">
     <h2>Hi ${ name }</h2>
     <p>Para confirmar tu cuenta, has click en el siguiente texto</p>
-    <a href="${ proccess.env.HOST_BACKEND }/api/user/activate/${token}">Confirmar cuenta</a>
+    <a href="${host}/api/user/activate/${token}">Confirmar cuenta</a>
 </div>
     `
 }
@@ -83,7 +84,7 @@ const getTemplateRecovery = (name, token) => {
     <h2>Hi ${ name }</h2>
     <p>Has olvidado tu contrasenia, por lo tanto hemos enviado un link a este correo</p>
     <p>para que puedas recuperarla, si no has sido tu puedes ignorar este correo.</p>
-    <a href="${ proccess.env.HOST_BACKEND }/api/user/confirm-mail-recovery/${token}">Confirmar cuenta</a>
+    <a href="${host}/api/user/confirm-mail-recovery/${token}">Confirmar cuenta</a>
 </div>
     `
 }
