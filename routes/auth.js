@@ -405,7 +405,7 @@ function createAccessToken(user) {
     email: user.email,
     rol: user.role
     
-  }, '3h');
+  }, '10');
 }
 
 function autheticateToken(req, res, next) {

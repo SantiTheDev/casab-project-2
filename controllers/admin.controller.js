@@ -1,19 +1,24 @@
 const User = require('../models/User')
 const Roles = require('../models/Roles')
 const tokenCont = require('../controllers/token.controller')
-
+const jwt = require('jsonwebtoken')
 
 const isAdmin = async(req, res, next) => {
     const token = req.params.token || req.body.token
+    
     const {data} = tokenCont.getDataToken(token)
+    console.log("Aquiiiiiii",data)
+    if(data.error){
+        return res.status(500).json({"error":data.error})
+    }
     console.log(data)
     const rol = await Roles.findOne({_id: data.rol})
     console.log(rol)
+    
     if(!data){
 
         return res.status(500).json({'error': 'Something goes wrong'})
     }
-
     if(data.rol === rol._id.toString()){
         next() //
     }else{

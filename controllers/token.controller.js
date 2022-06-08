@@ -14,6 +14,7 @@ const getDataToken = (token) => {
         if(err){
             console.log('error al obtener data')
             console.log(err)
+            data = {data: {error: 'token not valid'}}
         }else{
             data = decode
         }
