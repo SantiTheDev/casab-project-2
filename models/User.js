@@ -54,6 +54,10 @@ const userSchema = mongoose.Schema({
     isActive: {
         type: Boolean,
         default: false
+    },
+    last_sessions: {
+        type: Date,
+        
     }
 })
 

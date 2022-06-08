@@ -300,6 +300,10 @@ router.post("/login", async (req, res) => {
   try {
     if (validPassword) {
       const Token = createAccessToken(user);
+      user.last_session = Date.now
+      await user.save()
+        .then(data => console.log('Good'))
+        .catch(err => console.log(err))
       const reToken = jwt.sign(
         {
           user: user.name,
@@ -364,6 +368,9 @@ router.post("/verification", async (req, res) => {
         try {
           if (user) {
             const Token = createAccessToken(user);
+            await user.save()
+              .then(data => console.log('Good'))
+              .catch(err => console.log(err))
             const reToken = jwt.sign(
               {
                 user: user.name,

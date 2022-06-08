@@ -33,6 +33,13 @@ const deleteRoles = async(req, res) => {
             return res.status(400).json({'error':'Something goes wrong'})
         })
 }
+const getRol = async(req, res)=>{
+    const {rol} =req.params
+    const role = await Roles.findOne({_id: rol})
+        .then(data => {return data})
+        .catch(error => {return error})
+    return res.json(role)
+}
 module.exports = {
-    getRoles, addRoles, deleteRoles
+    getRoles, addRoles, deleteRoles, getRol
 }
