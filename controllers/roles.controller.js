@@ -13,16 +13,26 @@ const addRoles = async(req, res) => {
     const newRol = new Roles({role: rol})
 
     await newRol.save()
-        .then(res => {
+        .then(data => {
             console.log("Todo Salio Bien")
             return res.json({"msg": "El proceso va bien"})
         })
         .catch(err => {
             console.log(err)
-            return res.status(400).json({"msg": "Something goes wrong D:"})
+            return res.status(400).json({"error": "Something goes wrong D:"})
         })
 }
-
+const deleteRoles = async(req, res) => {
+    const {rolId} = req.body
+    await Roles.findOneAndDelete({_id: rolId})
+        .then(data => {
+            return res.status(200).json({'msg':'success'})
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(400).json({'error':'Something goes wrong'})
+        })
+}
 module.exports = {
-    getRoles, addRoles
+    getRoles, addRoles, deleteRoles
 }

@@ -49,7 +49,7 @@ const userSchema = mongoose.Schema({
     role: {
         type: mongoose.Schema.ObjectId,
         ref: 'Roles',
-        default: "629d76b00ff9f55f5add843d",
+        default: "62a04808e0243580be4f040c",
     },
     isActive: {
         type: Boolean,
